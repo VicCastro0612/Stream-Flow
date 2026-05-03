@@ -30,7 +30,7 @@ public class PeliculaService {
     }
 
     @Transactional(readOnly = true)
-    public List<PeliculaResponseDTO> obtenerTodas() {
+    public List<PeliculaResponseDTO> obtenerTodasLasPeliculas() {
         log.info("Consultando todas las películas");
         List<Pelicula> peliculas = peliculaRepository.findAll();
         log.info("Se encontraron {} películas", peliculas.size());
@@ -40,7 +40,7 @@ public class PeliculaService {
     }
 
     @Transactional(readOnly = true)
-    public PeliculaResponseDTO obtenerPorId(Long id) {
+    public PeliculaResponseDTO obtenerPeliculaPorId(Long id) {
         log.info("Buscando película con id {}", id);
         Pelicula pelicula = buscarPeliculaPorId(id);
         log.info("Película '{}' encontrada", pelicula.getTitulo());
@@ -48,11 +48,11 @@ public class PeliculaService {
     }
 
     @Transactional(readOnly = true)
-    public List<PeliculaResponseDTO> obtenerPorGenero(Long idGenero) {
+    public List<PeliculaResponseDTO> obtenerPeliculaPorGenero(Long idGenero) {
         log.info("Buscando películas del género con id {}", idGenero);
         // Validar que el género existe antes de filtrar
         generoService.buscarGeneroPorId(idGenero);
-        List<Pelicula> peliculas = peliculaRepository.findByGeneroId(idGenero);
+        List<Pelicula> peliculas = peliculaRepository.encontrarPorIdGenero(idGenero);
         log.info("Se encontraron {} películas para el género id {}", peliculas.size(), idGenero);
         return peliculas.stream()
                 .map(this::mapearAResponse)
@@ -62,7 +62,7 @@ public class PeliculaService {
     @Transactional(readOnly = true)
     public List<PeliculaResponseDTO> obtenerDesdeAnio(Integer anio) {
         log.info("Buscando películas desde el año {}", anio);
-        List<Pelicula> peliculas = peliculaRepository.findByAnioEstrenoGreaterThanEqual(anio);
+        List<Pelicula> peliculas = peliculaRepository.encontrarPorAnioEstrenoIgualMayor(anio);
         log.info("Se encontraron {} películas desde {}", peliculas.size(), anio);
         return peliculas.stream()
                 .map(this::mapearAResponse)
@@ -70,7 +70,7 @@ public class PeliculaService {
     }
 
     @Transactional
-    public PeliculaResponseDTO crear(PeliculaRequestDTO dto) {
+    public PeliculaResponseDTO crearPelicula(PeliculaRequestDTO dto) {
         log.info("Intentando crear película '{}'", dto.getTitulo());
 
         Genero genero = generoService.buscarGeneroPorId(dto.getIdGenero());
@@ -93,7 +93,7 @@ public class PeliculaService {
     }
 
     @Transactional
-    public PeliculaResponseDTO actualizar(Long id, PeliculaRequestDTO dto) {
+    public PeliculaResponseDTO actualizarPelicula(Long id, PeliculaRequestDTO dto) {
         log.info("Actualizando película con id {}", id);
         Pelicula pelicula = buscarPeliculaPorId(id);
         Genero genero = generoService.buscarGeneroPorId(dto.getIdGenero());
@@ -109,7 +109,7 @@ public class PeliculaService {
     }
 
     @Transactional
-    public void eliminar(Long id) {
+    public void eliminarPelicula(Long id) {
         log.info("Eliminando película con id {}", id);
         Pelicula pelicula = buscarPeliculaPorId(id);
         peliculaRepository.delete(pelicula);

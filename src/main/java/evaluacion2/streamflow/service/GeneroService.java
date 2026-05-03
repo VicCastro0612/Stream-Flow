@@ -26,7 +26,7 @@ public class GeneroService {
     }
 
     @Transactional(readOnly = true)
-    public List<GeneroResponseDTO> obtenerTodos() {
+    public List<GeneroResponseDTO> obtenerTodosLosGeneros() {
         log.info("Consultando todos los géneros");
         List<Genero> generos = generoRepository.findAll();
         log.info("Se encontraron {} géneros", generos.size());
@@ -36,7 +36,7 @@ public class GeneroService {
     }
 
     @Transactional(readOnly = true)
-    public GeneroResponseDTO obtenerPorId(Long id) {
+    public GeneroResponseDTO obtenerGeneroPorId(Long id) {
         log.info("Buscando género con id {}", id);
         Genero genero = buscarGeneroPorId(id);
         log.info("Género '{}' encontrado", genero.getNombre());
@@ -44,10 +44,10 @@ public class GeneroService {
     }
 
     @Transactional
-    public GeneroResponseDTO crear(GeneroRequestDTO dto) {
+    public GeneroResponseDTO crearGenero(GeneroRequestDTO dto) {
         log.info("Intentando crear género con nombre '{}'", dto.getNombre());
 
-        if (generoRepository.existsByNombre(dto.getNombre())) {
+        if (generoRepository.existePorNombre(dto.getNombre())) {
             log.warn("Creación fallida: ya existe un género con el nombre '{}'", dto.getNombre());
             throw new ReglaNegocioException("Ya existe un género con el nombre: " + dto.getNombre());
         }
@@ -62,11 +62,11 @@ public class GeneroService {
     }
 
     @Transactional
-    public GeneroResponseDTO actualizar(Long id, GeneroRequestDTO dto) {
+    public GeneroResponseDTO actualizarGenero(Long id, GeneroRequestDTO dto) {
         log.info("Actualizando género con id {}", id);
         Genero genero = buscarGeneroPorId(id);
 
-        if (!genero.getNombre().equals(dto.getNombre()) && generoRepository.existsByNombre(dto.getNombre())) {
+        if (!genero.getNombre().equals(dto.getNombre()) && generoRepository.existePorNombre(dto.getNombre())) {
             log.warn("Actualización fallida: el nombre '{}' ya está en uso", dto.getNombre());
             throw new ReglaNegocioException("Ya existe un género con el nombre: " + dto.getNombre());
         }
@@ -80,7 +80,7 @@ public class GeneroService {
     }
 
     @Transactional
-    public void eliminar(Long id) {
+    public void eliminarGenero(Long id) {
         log.info("Eliminando género con id {}", id);
         Genero genero = buscarGeneroPorId(id);
 

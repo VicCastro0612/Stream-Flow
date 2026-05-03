@@ -29,7 +29,7 @@ public class ValoracionService {
     }
 
     @Transactional(readOnly = true)
-    public List<ValoracionResponseDTO> obtenerTodas() {
+    public List<ValoracionResponseDTO> obtenerTodasLasValoraciones() {
         log.info("Consultando todas las valoraciones");
         List<Valoracion> valoraciones = valoracionRepository.findAll();
         log.info("Se encontraron {} valoraciones", valoraciones.size());
@@ -39,7 +39,7 @@ public class ValoracionService {
     }
 
     @Transactional(readOnly = true)
-    public ValoracionResponseDTO obtenerPorId(Long id) {
+    public ValoracionResponseDTO obtenerValoracionPorId(Long id) {
         log.info("Buscando valoración con id {}", id);
         Valoracion valoracion = buscarValoracionPorId(id);
         log.info("Valoración con id {} encontrada", id);
@@ -47,11 +47,11 @@ public class ValoracionService {
     }
 
     @Transactional(readOnly = true)
-    public List<ValoracionResponseDTO> obtenerPorPelicula(Long idPelicula) {
+    public List<ValoracionResponseDTO> obtenerValoracionPorPelicula(Long idPelicula) {
         log.info("Buscando valoraciones de la película id {}", idPelicula);
         // Validar que la película exista antes de consultar
         peliculaService.buscarPeliculaPorId(idPelicula);
-        List<Valoracion> valoraciones = valoracionRepository.findByPeliculaId(idPelicula);
+        List<Valoracion> valoraciones = valoracionRepository.encontrarPeliculaPorId(idPelicula);
         log.info("Se encontraron {} valoraciones para la película id {}", valoraciones.size(), idPelicula);
         return valoraciones.stream()
                 .map(this::mapearAResponse)
@@ -59,7 +59,7 @@ public class ValoracionService {
     }
 
     @Transactional
-    public ValoracionResponseDTO crear(ValoracionRequestDTO dto) {
+    public ValoracionResponseDTO crearValoracion(ValoracionRequestDTO dto) {
         log.info("Creando valoración para la película id {}", dto.getIdPelicula());
 
         Pelicula pelicula = peliculaService.buscarPeliculaPorId(dto.getIdPelicula());
@@ -80,7 +80,7 @@ public class ValoracionService {
     }
 
     @Transactional
-    public ValoracionResponseDTO actualizar(Long id, ValoracionRequestDTO dto) {
+    public ValoracionResponseDTO actualizarValoracion(Long id, ValoracionRequestDTO dto) {
         log.info("Actualizando valoración con id {}", id);
         Valoracion valoracion = buscarValoracionPorId(id);
         Pelicula pelicula = peliculaService.buscarPeliculaPorId(dto.getIdPelicula());
@@ -95,7 +95,7 @@ public class ValoracionService {
     }
 
     @Transactional
-    public void eliminar(Long id) {
+    public void eliminarValoracion(Long id) {
         log.info("Eliminando valoración con id {}", id);
         Valoracion valoracion = buscarValoracionPorId(id);
         valoracionRepository.delete(valoracion);
