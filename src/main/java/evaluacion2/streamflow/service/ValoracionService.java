@@ -51,7 +51,7 @@ public class ValoracionService {
         log.info("Buscando valoraciones de la película id {}", idPelicula);
         // Validar que la película exista antes de consultar
         peliculaService.buscarPeliculaPorId(idPelicula);
-        List<Valoracion> valoraciones = valoracionRepository.encontrarPeliculaPorId(idPelicula);
+        List<Valoracion> valoraciones = valoracionRepository.findByPeliculaId(idPelicula);
         log.info("Se encontraron {} valoraciones para la película id {}", valoraciones.size(), idPelicula);
         return valoraciones.stream()
                 .map(this::mapearAResponse)

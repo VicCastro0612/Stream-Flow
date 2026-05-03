@@ -52,7 +52,7 @@ public class PeliculaService {
         log.info("Buscando películas del género con id {}", idGenero);
         // Validar que el género existe antes de filtrar
         generoService.buscarGeneroPorId(idGenero);
-        List<Pelicula> peliculas = peliculaRepository.encontrarPorIdGenero(idGenero);
+        List<Pelicula> peliculas = peliculaRepository.findByGeneroId(idGenero);
         log.info("Se encontraron {} películas para el género id {}", peliculas.size(), idGenero);
         return peliculas.stream()
                 .map(this::mapearAResponse)
@@ -62,7 +62,7 @@ public class PeliculaService {
     @Transactional(readOnly = true)
     public List<PeliculaResponseDTO> obtenerDesdeAnio(Integer anio) {
         log.info("Buscando películas desde el año {}", anio);
-        List<Pelicula> peliculas = peliculaRepository.encontrarPorAnioEstrenoIgualMayor(anio);
+        List<Pelicula> peliculas = peliculaRepository.findByAnioEstrenoGreaterThanEqual(anio);
         log.info("Se encontraron {} películas desde {}", peliculas.size(), anio);
         return peliculas.stream()
                 .map(this::mapearAResponse)

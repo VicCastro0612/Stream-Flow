@@ -47,7 +47,7 @@ public class GeneroService {
     public GeneroResponseDTO crearGenero(GeneroRequestDTO dto) {
         log.info("Intentando crear género con nombre '{}'", dto.getNombre());
 
-        if (generoRepository.existePorNombre(dto.getNombre())) {
+        if (generoRepository.existsByNombre(dto.getNombre())) {
             log.warn("Creación fallida: ya existe un género con el nombre '{}'", dto.getNombre());
             throw new ReglaNegocioException("Ya existe un género con el nombre: " + dto.getNombre());
         }
@@ -66,7 +66,7 @@ public class GeneroService {
         log.info("Actualizando género con id {}", id);
         Genero genero = buscarGeneroPorId(id);
 
-        if (!genero.getNombre().equals(dto.getNombre()) && generoRepository.existePorNombre(dto.getNombre())) {
+        if (!genero.getNombre().equals(dto.getNombre()) && generoRepository.existsByNombre(dto.getNombre())) {
             log.warn("Actualización fallida: el nombre '{}' ya está en uso", dto.getNombre());
             throw new ReglaNegocioException("Ya existe un género con el nombre: " + dto.getNombre());
         }

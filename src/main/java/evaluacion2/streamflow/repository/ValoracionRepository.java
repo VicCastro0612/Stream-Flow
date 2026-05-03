@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
-    List<Valoracion> encontrarPeliculaPorId(Long idPelicula);
+    List<Valoracion> findByPeliculaId(Long idPelicula);
 }

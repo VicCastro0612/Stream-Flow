@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
 
-    List<Pelicula> encontrarPorAnioEstrenoIgualMayor(Integer anioEstreno);
+    List<Pelicula> findByAnioEstrenoGreaterThanEqual(Integer anioEstreno);
 
-    List<Pelicula> encontrarPorIdGenero(Long idGenero);
+    List<Pelicula> findByGeneroId(Long idGenero);
 }
