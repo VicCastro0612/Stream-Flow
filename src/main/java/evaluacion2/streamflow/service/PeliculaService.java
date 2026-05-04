@@ -50,7 +50,6 @@ public class PeliculaService {
     @Transactional(readOnly = true)
     public List<PeliculaResponseDTO> obtenerPeliculaPorGenero(Long idGenero) {
         log.info("Buscando películas del género con id {}", idGenero);
-        // Validar que el género existe antes de filtrar
         generoService.buscarGeneroPorId(idGenero);
         List<Pelicula> peliculas = peliculaRepository.findByGeneroId(idGenero);
         log.info("Se encontraron {} películas para el género id {}", peliculas.size(), idGenero);
@@ -138,7 +137,7 @@ public class PeliculaService {
         dto.setAnioEstreno(pelicula.getAnioEstreno());
         dto.setDuracion(pelicula.getDuracion());
         dto.setNombreGenero(pelicula.getGenero() != null ? pelicula.getGenero().getNombre() : null);
-        dto.setPromedioValoraciones(calcularPromedio(pelicula.getValoraciones()));
+        dto.setValoracion(calcularPromedio(pelicula.getValoraciones()));
         return dto;
     }
 }

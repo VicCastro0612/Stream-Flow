@@ -49,7 +49,6 @@ public class ValoracionService {
     @Transactional(readOnly = true)
     public List<ValoracionResponseDTO> obtenerValoracionPorPelicula(Long idPelicula) {
         log.info("Buscando valoraciones de la película id {}", idPelicula);
-        // Validar que la película exista antes de consultar
         peliculaService.buscarPeliculaPorId(idPelicula);
         List<Valoracion> valoraciones = valoracionRepository.findByPeliculaId(idPelicula);
         log.info("Se encontraron {} valoraciones para la película id {}", valoraciones.size(), idPelicula);

@@ -10,5 +10,5 @@ public class PeliculaResponseDTO {
     private Integer anioEstreno;
     private Integer duracion;
     private String nombreGenero;
-    private Double promedioValoraciones;
+    private Double valoracion;
 }
